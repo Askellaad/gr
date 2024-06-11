@@ -3,7 +3,8 @@
 indicator("Grid Trading Strategy", overlay=true)
 
 // Function to create the grid levels
-plotGrid(entryPrice, gridCount, perdiffav, perdifagainst, side, favor_levels, against_levels) =>
+plotGrid(entryPrice, perdiffav, perdifagainst, side, favor_levels, against_levels) =>
+
     if side == "buy" or side == "Buy"
         var float[] highLevels = array.new_float(favor_levels)
         var float[] lowLevels = array.new_float(against_levels)
@@ -24,7 +25,7 @@ plotGrid(entryPrice, gridCount, perdiffav, perdifagainst, side, favor_levels, ag
             array.set(lowColors, i, color.red)
             array.set(lowLines, i, na)
         
-        alert(message="EntryPrice: " + str.tostring(entryPrice) + "\n" + "ticker: " + syminfo.ticker + "\n" + "highLevels: " + str.tostring(highLevels) + "\n colors: " + "  LowLevels: " + str.tostring(lowLevels))
+        alert(message="EntryPrice: " + str.tostring(entryPrice) + "\n" + "ticker: " + syminfo.ticker + "\n" + '"highLevels": ' + str.tostring(highLevels) + '  "LowLevels": ' + str.tostring(lowLevels))
 
         for i = 0 to favor_levels - 1
             highLevel = array.get(highLevels, i)
@@ -32,7 +33,7 @@ plotGrid(entryPrice, gridCount, perdiffav, perdifagainst, side, favor_levels, ag
 
             if highColor == color.green and close >= highLevel
                 array.set(highColors, i, color.gray)
-                alert("High level " + str.tostring(i + 1) + " breached. New color: gray. Prev Color: Green " + syminfo.ticker, alert.freq_once_per_bar_close)
+                alert('"highlevel": ' + str.tostring(i + 1) + ' breached, \n "Newcolor": "gray",' +  '"PrevColor": "Green", ' + '"symbol": ' + syminfo.ticker + '}', alert.freq_once_per_bar_close)
                 if i > 0
                     array.set(highColors, i - 1, color.red)
 
@@ -42,7 +43,7 @@ plotGrid(entryPrice, gridCount, perdiffav, perdifagainst, side, favor_levels, ag
 
             if lowColor == color.red and close <= lowLevel
                 array.set(lowColors, i, color.gray)
-                alert("Low level " + str.tostring(i + 1) + " breached. New color: gray. Prev Color: red " + syminfo.ticker, alert.freq_once_per_bar_close)
+                alert('"lowlevel": ' + str.tostring(i + 1) + ' breached, \n "Newcolor": "gray",' +  '"PrevColor": "Red", ' + '"symbol": ' + syminfo.ticker + '}', alert.freq_once_per_bar_close)
                 if i >= 0
                     array.set(lowColors, i, color.green)
 
@@ -86,7 +87,7 @@ plotGrid(entryPrice, gridCount, perdiffav, perdifagainst, side, favor_levels, ag
             array.set(lowColors, i, color.green)
             array.set(lowLines, i, na)
 
-        alert(message="EntryPrice: " + str.tostring(entryPrice) + "\n" + "ticker: " + syminfo.ticker + "\n" + "highLevels: " + str.tostring(highLevels) + "\n colors: " + "  LowLevels: " + str.tostring(lowLevels))
+        alert(message='"EntryPrice": ' + str.tostring(entryPrice) + "\n" + '"ticker": ' + syminfo.ticker + "\n" + "highLevels: " + str.tostring(highLevels) + '"LowLevels": ' + str.tostring(lowLevels))
 
         for i = 0 to against_levels - 1
             highLevel = array.get(highLevels, i)
@@ -94,7 +95,7 @@ plotGrid(entryPrice, gridCount, perdiffav, perdifagainst, side, favor_levels, ag
 
             if highColor == color.red and close >= highLevel
                 array.set(highColors, i, color.gray)
-                alert("High level " + str.tostring(i + 1) + " breached. New color: gray. Prev Color: Red " + syminfo.ticker, alert.freq_once_per_bar_close)
+                alert('"highlevel": ' + str.tostring(i + 1) + ' breached, \n "Newcolor": "gray",' +  '"PrevColor": "Red", ' + '"symbol": ' + syminfo.ticker + '}', alert.freq_once_per_bar_close)
                 if i > 0
                     array.set(highColors, i , color.green)
 
@@ -104,7 +105,7 @@ plotGrid(entryPrice, gridCount, perdiffav, perdifagainst, side, favor_levels, ag
 
             if lowColor == color.green and close <= lowLevel
                 array.set(lowColors, i, color.gray)
-                alert("Low level " + str.tostring(i + 1) + " breached. New color: gray. Prev Color: Green " + syminfo.ticker, alert.freq_once_per_bar_close)
+                alert('"lowlevel": ' + str.tostring(i + 1) + ' breached, \n "Newcolor": "gray",' +  '"PrevColor": "Green", ' + '"symbol": ' + syminfo.ticker + '}', alert.freq_once_per_bar_close)
                 if i >= 0
                     array.set(lowColors, i, color.red)
 
@@ -133,7 +134,7 @@ entry_price = input.float(defval=2.4620, title="Entry Price")
 
 // Parameters
 closeprice = close
-grid_count = input.int(defval=4, title="Number of Grid Levels")
+// grid_count = input.int(defval=4, title="Number of Grid Levels")
 perdiffav = input.float(defval=1, title="Percentage Difference favor")
 perdifagainst = input.float(defval=2, title="Percentage Difference against")
 side = input.string(defval="Buy", title="Side", options=["Buy", "Sell"])
@@ -141,7 +142,7 @@ favor_levels = input.int(defval=4, title="Favor Levels")
 against_levels = input.int(defval=10, title="Against Levels")
 
 if not na(entry_price)
-    plotGrid(entry_price, grid_count, perdiffav, perdifagainst, side, favor_levels, against_levels)
+    plotGrid(entry_price, perdiffav, perdifagainst, side, favor_levels, against_levels)
     alert("entry price: " + str.tostring(entry_price))
 
 plot(entry_price, "entry", color.yellow, 2, plot.style_line, true)
