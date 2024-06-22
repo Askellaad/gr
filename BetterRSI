@@ -1,0 +1,52 @@
+//@version=3
+study("Better RSI")
+cycler = na
+myPeriod = input(defval = 14, type=integer, title="Period")
+src = input(close, type=source)
+showCycler = input(true,'Show cycler?')
+lvl = input(50, 'Cycler level on plot')
+myRSI = rsi(src, myPeriod)
+firstcolor = color(white,10)
+secondcolor = color(orange,50)
+thirdcolor = gray
+
+h30 = hline(30,color=firstcolor,linestyle=dashed,title='Low')
+h70 = hline(70,color=firstcolor,linestyle=dashed,title = 'High')
+h20 = hline(20, color=secondcolor,linestyle = solid,title='Second low')
+h80 = hline(80, color=secondcolor,linestyle=solid,title='Second high')
+//h50 = hline(50, color=orange, title= 'Mid line')
+h40 = hline(40, color = thirdcolor, linestyle = dashed,title = '40 line')
+h60 = hline(60, color = thirdcolor, linestyle = dashed, title = '60 line')
+//fill(h30,h20,red,transp=80, title='Oversold color')
+//fill(h80,h70,red,transp=80, title='Overbought color')
+fill(h30,h70,fuchsia,transp=90, title= 'Background color')
+//cond =? red:white
+RSIplot = plot(myRSI,color=white,linewidth=2,transp=0,title="RSI")
+plot(myRSI >= 70 or myRSI<= 30? myRSI:na,style = linebr,linewidth=3,color=red,transp = 0, title = 'Oversold color')
+
+//cycler 
+cycler := if myRSI > 69 or myRSI< 31 
+    a = if myRSI > 69
+        1 // bullish
+    else 
+        2 // bearish
+    a
+else
+    b = if (nz(cycler[1]) == 1 and myRSI < 39) or (nz(cycler[1]) == 2 and myRSI > 61) 
+        0
+    else 
+        nz(cycler[1])
+    b
+            
+   
+mycolor = if cycler == 0 
+    white 
+else
+    c = if cycler == 1
+        lime
+    else
+        red
+    c
+    
+plot(showCycler? lvl:na, style = line, color = mycolor, transp = 30, linewidth=2, title  = 'Cycler colors')
+    
