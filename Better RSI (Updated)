@@ -1,0 +1,68 @@
+//@version=5
+indicator('Better RSI', overlay=false)
+myPeriod = input.int(14, title='Period')
+src = input(close, title='Source')
+showCycler = input.bool(true, 'Show cycler?')
+lvl = input.int(50, 'Cycler level on plot')
+myRSI = ta.rsi(src, myPeriod)
+
+// Define colors
+whiteColor = color.new(color.white, 0)
+redColor = color.new(color.red, 0)
+grayColor = color.gray
+
+// Define horizontal lines
+h30 = hline(30, color=whiteColor, linestyle=hline.style_dashed, title='Low')
+h70 = hline(70, color=whiteColor, linestyle=hline.style_dashed, title='High')
+h20 = hline(20, color=grayColor, linestyle=hline.style_solid, title='Second low')
+h80 = hline(80, color=grayColor, linestyle=hline.style_solid, title='Second high')
+h40 = hline(40, color=grayColor, linestyle=hline.style_dashed, title='40 line')
+h60 = hline(60, color=grayColor, linestyle=hline.style_dashed, title='60 line')
+
+// Plot the background color between 30 and 70
+fill(h30, h70, color.new(color.fuchsia, 90), title='Background color')
+
+// Plot RSI
+RSIplot = plot(myRSI, color=whiteColor, linewidth=2, title='RSI')
+plot(myRSI >= 70 or myRSI <= 30 ? myRSI : na, style=plot.style_linebr, linewidth=3, color=redColor, title='Oversold/Overbought color')
+
+// Track the previous color state
+var int previousColorState = na
+
+// Determine current color state
+currentColorState = myRSI >= 70 or myRSI <= 30 ? 1 : 0
+
+// Check for color change
+if (not na(previousColorState) and previousColorState != currentColorState)
+    json_message = '{"RSI": ' + str.tostring(myRSI) + ', "color": "' + (currentColorState == 1 ? "red" : "white") + '"}'
+    alert(json_message, alert.freq_once_per_bar)
+
+// Update the previous color state
+previousColorState := currentColorState
+
+// Cycler logic
+cycler = int(na)
+cycler := if myRSI > 69 or myRSI < 31
+    a = if myRSI > 69
+        1  // bullish
+    else
+        2  // bearish
+    a
+else
+    b = if nz(cycler[1]) == 1 and myRSI < 39 or nz(cycler[1]) == 2 and myRSI > 61
+        0
+    else
+        nz(cycler[1])
+    b
+
+// Determine color based on cycler state
+mycolor = if cycler == 0
+    color.white
+else
+    c = if cycler == 1
+        color.lime
+    else
+        color.red
+    c
+
+plot(showCycler ? lvl : na, style=plot.style_line, color=color.new(mycolor, 5), linewidth=2, title='Cycler colors')
