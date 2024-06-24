@@ -34,7 +34,8 @@ currentColorState = myRSI >= 70 or myRSI <= 30 ? 1 : 0
 
 // Check for color change
 if (not na(previousColorState) and previousColorState != currentColorState)
-    json_message = '{"RSI": ' + str.tostring(myRSI) + ', "color": "' + (currentColorState == 1 ? "red" : "white") + '"}'
+    // json_message = '{"RSI": ' + str.tostring(myRSI) + ', "color": "' + (currentColorState == 1 ? "red" : "white") + ', "prev_color": "' + (previousColorState == 1 ? "red" : "white") + '"}'
+    json_message = '{"RSI": ' + str.tostring(myRSI) + ', "color": "' + (currentColorState == 1 ? "red" : "white") + '", "prev_color": "' + (previousColorState == 1 ? "red" : "white") + '"}'
     alert(json_message, alert.freq_once_per_bar)
 
 // Update the previous color state
