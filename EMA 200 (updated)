@@ -6,7 +6,7 @@ src = input(close, title="Source")
 offset = input.int(title="Offset", defval=0, minval=-500, maxval=500, display = display.data_window)
 out = ta.ema(src, len)
 alertCondition = true
-alertcondition(alertCondition, title="EMA200 Alert", message='{"EMA200": {{plot("EMA")}} }')
+alertcondition(alertCondition, title="EMA200 Alert", message="{\"EMA200\": {{plot(\"EMA\")}} }")
 
 plot(out, title="EMA", color=color.blue, offset=offset)
 
