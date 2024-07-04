@@ -1,0 +1,57 @@
+NOTE: 
+| means OR
+Next line means AND
+
+
+
+TO OPEN A LONG TRADE:
+CASE1:
+	price is above ema200 line
+	rsi is below 30
+	rsi turns white from red
+
+	CASE2:
+	when candle breaches the lower bands with wig/low | candle close | green triangle
+	price will be above ema 200
+	
+	CASE3 (reversal Entries):
+	when candle close is below BB low
+	when better RSI 2 below 30 and turns white from red
+	when Alphatrend will be on buy
+
+	TP
+	candle close above BB bands or Red traingle
+	rsi 1 will be above 70 turns white from red
+	
+
+	SL
+	3% loss
+
+
+TO OPEN A SHORT TRADE:
+CASE1:
+	price below ema200 line |
+	RSI is above 70 and turns white from red |
+
+	CASE2:
+	when candle breaches the upper side of BB with wig | candle close | red Triangle 
+	price below 200EMA
+
+
+	CASE3 (reversal Entries):
+	when candle close is above part of BB | 
+	Better RSI 2 is above 70 and turns white from red
+	when Alpha trend is on SELL
+
+	TP:
+	when candle close below lower BB | green triangle | when better RSI 1 will be below 30 and turns white from red
+	
+	SL:
+	3% loss
+	
+
+
+
+
+
+	
